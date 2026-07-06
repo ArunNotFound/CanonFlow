@@ -32,6 +32,12 @@ module Transpiler =
             | InList items -> 
                 let arr = items |> List.map (sprintf "\"%s\"") |> String.concat ", "
                 $"[{arr}].includes(value)", Fidelity.Exact
+            | InSet items -> 
+                let arr = items |> List.map (sprintf "\"%s\"") |> String.concat ", "
+                $"[{arr}].includes(value)", Fidelity.Exact
+            | RelativeBound(colA, op, colB) ->
+                // Note: colA and colB are properties of the root 'value' object
+                $"value.{colA} {op} value.{colB}", Fidelity.Exact
             | PrimaryKey -> "true", Fidelity.Unsupported "PrimaryKey concept does not exist in TS validators"
             | NonEmpty -> $"value.length > 0", Fidelity.Exact
             | Opaque raw -> "true /* opaque sql */", Fidelity.Unsupported $"Cannot transpile raw SQL: {raw}"

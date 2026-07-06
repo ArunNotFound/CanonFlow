@@ -68,22 +68,8 @@ module Program =
                     System.IO.File.WriteAllText("client/src/validators.ts", tsSb.ToString())
                     printfn "Artifacts saved to 'output/' and TypeScript generated in 'client/src/validators.ts'."
 
-                    // Optimize constraints for the proof engine
-                    let optimizedTables =
-                        tables
-                        |> List.map (fun t ->
-                            let newCols =
-                                t.Columns |> List.map (fun c ->
-                                    let parsed = 
-                                        c.CheckConstraints 
-                                        |> List.map Canon.Introspect.SqlParser.parseConstraint
-                                    { c with ParsedConstraints = parsed }
-                                )
-                            { t with Columns = newCols }
-                        )
-
                     // Generate the Mathematical Proof Report
-                    let proofReport = Canon.Cli.ProofEmitter.emitProofReport optimizedTables
+                    let proofReport = Canon.Cli.ProofEmitter.emitProofReport tables
                     System.IO.File.WriteAllText("output/PROOF.md", proofReport)
                     printfn "\n[Proof Engine] Signed certification generated at 'output/PROOF.md'."
                 

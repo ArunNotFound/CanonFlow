@@ -21,6 +21,8 @@ type Constraint =
     | IntRange of lo: Bound<int64> option * hi: Bound<int64> option
     | MaxLength of int
     | InList of string list
+    | InSet of string list // represents IN or ANY(ARRAY[...])
+    | RelativeBound of colA: string * op: string * colB: string
     | NonEmpty
     | PrimaryKey
     | Opaque of string

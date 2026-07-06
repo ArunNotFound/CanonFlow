@@ -32,6 +32,7 @@ module Events =
     type FlowEvent =
         | SchemaDiscovered of TableDef
         | SchemaDropped of string
+        interface TypeShape.UnionContract.IUnionContract
         
     /// FsCodec allows us to easily serialize/deserialize our domain events
     /// so they can be natively stored in EventStore or Kafka.
