@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Canon.Introspect\Canon.Introspect.fsproj" />
+    <ProjectReference Include="..\..\src\Canon.Emit\Canon.Emit.fsproj" />
+    <ProjectReference Include="..\..\src\Canon.Core\Canon.Core.fsproj" />
+    <ProjectReference Include="..\..\src\Canon.Fable\Canon.Fable.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="Testcontainers.PostgreSql" Version="4.13.0" />
+  </ItemGroup>
+
+</Project>

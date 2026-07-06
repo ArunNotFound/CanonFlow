@@ -72,10 +72,14 @@ type PostgresSchemaProvider(connectionString: string) =
                     let defVal = if colReader.IsDBNull(6) then None else Some(colReader.GetString(6))
                     let isGen = if colReader.IsDBNull(7) then false else colReader.GetString(7) = "ALWAYS"
                     let checkConstraintStr = if colReader.IsDBNull(8) then "" else colReader.GetString(8)
+                    let cleanCheckStr = 
+                        checkConstraintStr
+                            .Replace("CHECK ", "")
+                            .Replace("::numeric", "")
                     
                     let parsedConstraints =
-                        if String.IsNullOrEmpty(checkConstraintStr) then []
-                        else [SqlParser.parseConstraint checkConstraintStr]
+                        if String.IsNullOrEmpty(cleanCheckStr) then []
+                        else [SqlParser.parseConstraint cleanCheckStr]
                     
                     yield (tSchema, tName, { 
                         Name = cName

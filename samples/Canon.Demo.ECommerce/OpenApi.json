@@ -1,0 +1,6 @@
+[
+"customers_age": {"properties": {"age": {}}},
+"orders_total_amount": {},
+"products_price": {},
+"products_stock": {"properties": {"stock": {"minimum": 0}}}
+]
