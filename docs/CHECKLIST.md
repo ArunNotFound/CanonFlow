@@ -5,11 +5,11 @@ This document consolidates the remaining high-level tasks required to elevate Ca
 ## 🟢 Phase 1: The Sample App Proving Ground
 *These tasks must be completed to successfully unleash CanonFlow into a real sample app without friction.*
 
-- [ ] **Live Postgres Brownfield Queries:** Replace the placeholder `PostgresSchemaProvider` data with actual `information_schema` / `pg_catalog` SQL queries that extract live PKs, FKs, Unique Indexes, and Default Values.
-- [ ] **The "Agreement Test" (Node.js vs F#):** Build a test where random FsCheck lattices are evaluated in native F#, transpiled to TypeScript, and executed in a hidden Node.js process. Prove byte-for-byte agreement.
-- [ ] **NNF Canonical Normalization:** Implement Negation Normal Form (NNF) in `Lattice.fs`. This guarantees structural equality matches semantic equality, enabling caching.
-- [ ] **`dotnet tool` Packaging:** Make CanonFlow installable with a single global command (`dotnet tool install -g canonflow`) so sample apps can invoke it cleanly in their build pipelines.
-- [ ] **The Killer Terminal Demo:** Polish the CLI so it connects to a DB, extracts rules, transpiles to TS, proves equivalence, and prints the High-Severity Drift Report all in one command.
+- [x] **Live Postgres Brownfield Queries:** Replace the placeholder `PostgresSchemaProvider` data with actual `information_schema` / `pg_catalog` SQL queries that extract live PKs, FKs, Unique Indexes, and Default Values.
+- [x] **The "Agreement Test" (Node.js vs F#):** Build a test where random FsCheck lattices are evaluated in native F#, transpiled to TypeScript, and executed in a hidden Node.js process. Prove byte-for-byte agreement.
+- [x] **NNF Canonical Normalization:** Implement Negation Normal Form (NNF) in `Lattice.fs`. This guarantees structural equality matches semantic equality, enabling caching.
+- [x] **`dotnet tool` Packaging:** Make CanonFlow installable with a single global command (`dotnet tool install -g canonflow`) so sample apps can invoke it cleanly in their build pipelines.
+- [x] **The Killer Terminal Demo:** Polish the CLI so it connects to a DB, extracts rules, transpiles to TS, proves equivalence, and prints the High-Severity Drift Report all in one command.
 
 ## 🟡 Phase 2: Enterprise & AI Readiness
 *These tasks solidify CanonFlow as the trusted Governance Primitive for AI agents.*

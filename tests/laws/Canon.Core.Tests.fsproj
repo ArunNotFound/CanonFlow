@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="LatticeLaws.fs" />
+    <Compile Include="AgreementTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Canon.Core\Canon.Core.fsproj" />
+    <ProjectReference Include="..\..\src\Canon.Fable\Canon.Fable.fsproj" />
   </ItemGroup>
 
 </Project>
