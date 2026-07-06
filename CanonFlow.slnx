@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Canon.Cli/Canon.Cli.fsproj" />
+    <Project Path="src/Canon.Conformance/Canon.Conformance.fsproj" />
     <Project Path="src/Canon.Contracts/Canon.Contracts.fsproj" />
     <Project Path="src/Canon.Core/Canon.Core.fsproj" />
     <Project Path="src/Canon.Ddd/Canon.Ddd.fsproj" />

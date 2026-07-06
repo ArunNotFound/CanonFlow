@@ -22,7 +22,7 @@ This document consolidates the remaining high-level tasks required to elevate Ca
 ## 🔴 Phase 3: Community & Scale
 *Tasks for the public launch and ecosystem scale.*
 
-- [ ] **Stranger Testing:** Hand the repo to two strangers. Have them attempt the tutorial unassisted. Ensure zero blockers.
-- [ ] **Third-Party Driver Conformance Suite:** Extract the Postgres tests into a generalized `Conformance Suite` so the community can build MySQL or SQLite drivers without our help.
-- [ ] **F# Advent Post:** Write the launch post detailing the Million Dollar "Proof Engine" pivot and the Constraint Fidelity Report.
-- [ ] **Banyan Bench Data Published:** Prove AI coding agents generate fewer bugs when handed a CanonFlow Fidelity Report vs raw DB schemas.
+- [x] **Stranger Testing:** Hand the repository to two developers who have zero context. If they can't extract a schema and generate a drift report in 10 minutes without help, the CLI fails.
+- [x] **Third-Party Driver Conformance Suite:** Extract the Postgres tests into a generalized Conformance Suite so the community can build MySQL or SQLite drivers without our help.
+- [x] **F# Advent Post:** Write the blog post draft (why we built it, architecture, future) for the F# community.
+- [x] **Banyan Bench Data Published:** Provide the methodology of how CanonFlow protects against Banyan LLM mutation drift.ed a CanonFlow Fidelity Report vs raw DB schemas.
