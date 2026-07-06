@@ -8,6 +8,7 @@
     <Project Path="src/Canon.Fable/Canon.Fable.fsproj" />
     <Project Path="src/Canon.Flow/Canon.Flow.fsproj" />
     <Project Path="src/Canon.Introspect/Canon.Introspect.fsproj" />
+    <Project Path="src/Canon.SqlHydra/Canon.SqlHydra.fsproj" />
   </Folder>
   <Folder Name="/tests/" />
   <Folder Name="/tests/integration/">
