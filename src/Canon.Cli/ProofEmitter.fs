@@ -20,6 +20,8 @@ module ProofEmitter =
         | Leaf(FieldBound(f, Range(Some(Exclusive min), None))) -> sprintf "%s > %M" f min
         | Leaf(FieldBound(f, Range(None, Some(Exclusive max)))) -> sprintf "%s < %M" f max
         | Leaf(FieldBound(f, Range(Some(Inclusive min), Some(Inclusive max)))) -> sprintf "%M <= %s <= %M" min f max
+        | Leaf(FieldBound(f, InSet items)) -> sprintf "%s IN (%s)" f (items |> List.map (sprintf "'%s'") |> String.concat ", ")
+        | Leaf(RelativeBound(colA, op, colB)) -> sprintf "%s %s %s" colA op colB
         | Leaf(Opaque sql) -> sql
         | And(a, b) -> sprintf "(%s AND %s)" (formatLattice a) (formatLattice b)
         | Or(a, b) -> sprintf "(%s OR %s)" (formatLattice a) (formatLattice b)

@@ -51,7 +51,7 @@ type PostgresSchemaProvider(connectionString: string) =
                     c.table_schema, c.table_name, c.column_name, c.data_type, c.is_nullable, c.character_maximum_length, c.column_default, c.is_generated,
                     (SELECT pg_get_constraintdef(con.oid)
                      FROM pg_constraint con
-                     INNER JOIN pg_attribute a ON a.attnum = ANY(con.conkey)
+                     INNER JOIN pg_attribute a ON a.attnum = ANY(con.conkey) AND a.attrelid = con.conrelid
                      WHERE con.conrelid = (c.table_schema || '.' || c.table_name)::regclass
                        AND a.attname = c.column_name AND con.contype = 'c' LIMIT 1) as check_constraint
                 FROM information_schema.columns c
