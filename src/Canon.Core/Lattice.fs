@@ -56,6 +56,22 @@ module Lattice =
         | False, x | x, False -> x
         | _ -> Or(left, right)
 
+    let rec toNNF (l: Lattice<'Leaf>) : Lattice<'Leaf> =
+        match l with
+        | True -> True
+        | False -> False
+        | Leaf c -> Leaf c
+        | And(a, b) -> And(toNNF a, toNNF b)
+        | Or(a, b) -> Or(toNNF a, toNNF b)
+        | Not inner ->
+            match inner with
+            | True -> False
+            | False -> True
+            | Leaf c -> Not (Leaf c)
+            | Not x -> toNNF x
+            | And(a, b) -> Or(toNNF (Not a), toNNF (Not b))
+            | Or(a, b) -> And(toNNF (Not a), toNNF (Not b))
+
     let rec eval (evalLeaf: 'Leaf -> bool) (l: Lattice<'Leaf>) =
         match l with
         | True -> true
