@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ProofEmitter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
