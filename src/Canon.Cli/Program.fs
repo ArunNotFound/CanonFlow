@@ -68,16 +68,23 @@ module Program =
                     System.IO.File.WriteAllText("client/src/validators.ts", tsSb.ToString())
                     printfn "Artifacts saved to 'output/' and TypeScript generated in 'client/src/validators.ts'."
 
-                    // Generate Drift Report
+                    // Generate Drift Report across TypeScript AND OpenAPI
                     let driftViolations = 
                         [ for t in tables do
                             for c in t.Columns do
                                 if not c.CheckConstraints.IsEmpty then
                                     // Mock lattice for demo
                                     let lattice = Lattice.Leaf (Range(Some(Exclusive 0m), None))
-                                    let _, fidelity = Transpiler.emitValidator $"{t.Name}_{c.Name}" lattice
                                     let rawConstraint = String.Join(" AND ", c.CheckConstraints)
-                                    yield! DriftEngine.analyzeFidelity c.Name "TypeScript" fidelity rawConstraint |> Option.toList ]
+                                    
+                                    // TypeScript Drift
+                                    let _, tsFidelity = Transpiler.emitValidator $"{t.Name}_{c.Name}" lattice
+                                    yield! DriftEngine.analyzeFidelity c.Name "TypeScript" tsFidelity rawConstraint |> Option.toList 
+                                    
+                                    // OpenAPI Drift
+                                    let _, openApiFidelity = Canon.Emit.OpenApiTranspiler.emitSchema $"{t.Name}_{c.Name}" lattice
+                                    yield! DriftEngine.analyzeFidelity c.Name "OpenAPI" openApiFidelity rawConstraint |> Option.toList 
+                        ]
                     
                     if not driftViolations.IsEmpty then
                         printfn "\n[Drift Detection Report - HIGH SEVERITY]"
