@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "mSuZ1tnyixs=",
+  "success": true,
+  "projectFilePath": "/root/repos/github/fsharp/CanonFlow/src/Canon.Flow/Canon.Flow.fsproj",
+  "expectedPackageFiles": [
+    "/root/.nuget/packages/fscodec/3.1.0/fscodec.3.1.0.nupkg.sha512",
+    "/root/.nuget/packages/fscodec.box/3.1.1/fscodec.box.3.1.1.nupkg.sha512",
+    "/root/.nuget/packages/fscodec.systemtextjson/3.1.2/fscodec.systemtextjson.3.1.2.nupkg.sha512",
+    "/root/.nuget/packages/fsharp.core/10.1.301/fsharp.core.10.1.301.nupkg.sha512",
+    "/root/.nuget/packages/fsharp.umx/1.0.0/fsharp.umx.1.0.0.nupkg.sha512",
+    "/root/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "/root/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.0/microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "/root/.nuget/packages/npgsql/10.0.3/npgsql.10.0.3.nupkg.sha512",
+    "/root/.nuget/packages/typeshape/10.0.0/typeshape.10.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

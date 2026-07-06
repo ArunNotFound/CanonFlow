@@ -18,3 +18,4 @@
 /root/repos/github/fsharp/CanonFlow/src/Canon.Contracts/bin/Debug/net10.0/Canon.Introspect.pdb
 /root/repos/github/fsharp/CanonFlow/src/Canon.Contracts/bin/Debug/net10.0/Canon.Introspect.xml
 /root/repos/github/fsharp/CanonFlow/src/Canon.Contracts/obj/Debug/net10.0/Canon.Co.C37D89C8.Up2Date
+/root/repos/github/fsharp/CanonFlow/src/Canon.Contracts/obj/Debug/net10.0/Canon.Contracts.sourcelink.json

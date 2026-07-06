@@ -6,9 +6,13 @@
     <Project Path="src/Canon.Ddd/Canon.Ddd.fsproj" />
     <Project Path="src/Canon.Emit/Canon.Emit.fsproj" />
     <Project Path="src/Canon.Fable/Canon.Fable.fsproj" />
+    <Project Path="src/Canon.Flow/Canon.Flow.fsproj" />
     <Project Path="src/Canon.Introspect/Canon.Introspect.fsproj" />
   </Folder>
   <Folder Name="/tests/" />
+  <Folder Name="/tests/integration/">
+    <Project Path="tests/integration/Canon.IntegrationTests.fsproj" />
+  </Folder>
   <Folder Name="/tests/laws/">
     <Project Path="tests/laws/Canon.Core.Tests.fsproj" />
   </Folder>

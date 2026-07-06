@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="IEmitter.fs" />
     <Compile Include="OpenSearchEmitter.fs" />
+    <Compile Include="PostgresEmitter.fs" />
   </ItemGroup>
 
   <ItemGroup>

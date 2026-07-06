@@ -19,5 +19,10 @@
  Converts typed fields into strict OpenSearch field types.
 </summary>
 </member>
+<member name="T:Canon.Emit.Postgres.PostgresEmitter">
+<summary>
+ Emits Postgres DDL (CREATE TABLE) from the domain schema.
+</summary>
+</member>
 </members>
 </doc>

@@ -49,3 +49,4 @@
 /root/repos/github/fsharp/CanonFlow/src/Canon.Cli/bin/Debug/net10.0/Canon.Contracts.dll
 /root/repos/github/fsharp/CanonFlow/src/Canon.Cli/bin/Debug/net10.0/Canon.Contracts.pdb
 /root/repos/github/fsharp/CanonFlow/src/Canon.Cli/bin/Debug/net10.0/Canon.Contracts.xml
+/root/repos/github/fsharp/CanonFlow/src/Canon.Cli/obj/Debug/net10.0/Canon.Cli.sourcelink.json

@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("Canon.Fable")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d88a1b595b16624fcb000275060a4b7993670da5")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("Canon.Fable")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("Canon.Fable")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]

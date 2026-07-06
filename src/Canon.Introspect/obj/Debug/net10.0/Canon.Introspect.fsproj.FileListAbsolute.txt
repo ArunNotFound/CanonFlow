@@ -15,3 +15,4 @@
 /root/repos/github/fsharp/CanonFlow/src/Canon.Introspect/obj/Debug/net10.0/Canon.Introspect.xml
 /root/repos/github/fsharp/CanonFlow/src/Canon.Introspect/obj/Debug/net10.0/Canon.Introspect.pdb
 /root/repos/github/fsharp/CanonFlow/src/Canon.Introspect/obj/Debug/net10.0/ref/Canon.Introspect.dll
+/root/repos/github/fsharp/CanonFlow/src/Canon.Introspect/obj/Debug/net10.0/Canon.Introspect.sourcelink.json

@@ -15,3 +15,4 @@
 /root/repos/github/fsharp/CanonFlow/src/Canon.Fable/bin/Debug/net10.0/Canon.Core.pdb
 /root/repos/github/fsharp/CanonFlow/src/Canon.Fable/bin/Debug/net10.0/Canon.Core.xml
 /root/repos/github/fsharp/CanonFlow/src/Canon.Fable/obj/Debug/net10.0/Canon.Fa.8DDF02EC.Up2Date
+/root/repos/github/fsharp/CanonFlow/src/Canon.Fable/obj/Debug/net10.0/Canon.Fable.sourcelink.json

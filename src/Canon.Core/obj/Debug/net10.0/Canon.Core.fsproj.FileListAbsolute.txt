@@ -11,3 +11,4 @@
 /root/repos/github/fsharp/CanonFlow/src/Canon.Core/obj/Debug/net10.0/Canon.Core.xml
 /root/repos/github/fsharp/CanonFlow/src/Canon.Core/obj/Debug/net10.0/Canon.Core.pdb
 /root/repos/github/fsharp/CanonFlow/src/Canon.Core/obj/Debug/net10.0/ref/Canon.Core.dll
+/root/repos/github/fsharp/CanonFlow/src/Canon.Core/obj/Debug/net10.0/Canon.Core.sourcelink.json
