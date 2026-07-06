@@ -14,5 +14,6 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/root/.nuget/packages/fsharp.core/10.1.301</PkgFSharp_Core>
+    <PkgFsCodec_SystemTextJson Condition=" '$(PkgFsCodec_SystemTextJson)' == '' ">/root/.nuget/packages/fscodec.systemtextjson/3.1.2</PkgFsCodec_SystemTextJson>
   </PropertyGroup>
 </Project>
