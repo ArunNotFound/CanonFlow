@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Include="Library.fs" />
     <Compile Include="Transpiler.fs" />
+    <Compile Include="KotlinTranspiler.fs" />
+    <Compile Include="SwiftTranspiler.fs" />
   </ItemGroup>
 
   <ItemGroup>

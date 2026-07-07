@@ -12,6 +12,7 @@
   <ItemGroup>
     <Compile Include="ProofEmitter.fs" />
     <Compile Include="ReactScaffold.fs" />
+    <Compile Include="ComposeScaffold.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
