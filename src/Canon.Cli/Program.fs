@@ -11,6 +11,7 @@ type CliArguments =
     | [<CliPrefix(CliPrefix.DoubleDash)>] Contracts
     | [<CliPrefix(CliPrefix.DoubleDash)>] Demo
     | [<CliPrefix(CliPrefix.DoubleDash)>] Verify
+    | [<CliPrefix(CliPrefix.DoubleDash)>] ScaffoldForms
     
     interface IArgParserTemplate with
         member s.Usage =
@@ -19,6 +20,7 @@ type CliArguments =
             | Contracts -> "Emit JSON Schema and TypeScript clients."
             | Demo -> "Run the 30-minute stranger demo."
             | Verify -> "Run in strict mode for CI/CD. Fails if any constraints are unsupported or approximate."
+            | ScaffoldForms -> "Generate AI-assisted React Hook Form components from DB constraints."
 
 module Program =
     [<EntryPoint>]
@@ -82,6 +84,16 @@ module Program =
                         else
                             printfn "\n[CI/CD CHECK PASSED] 100%% exact mathematical fidelity achieved!"
                 
+                // Scaffold React Forms
+                if results.Contains(ScaffoldForms) then
+                    printfn "\n[Scaffolding AI-Assisted React Forms]"
+                    System.IO.Directory.CreateDirectory("client/src/forms") |> ignore
+                    for t in tables do
+                        let formCode = Canon.Cli.ReactScaffold.generateForm t
+                        let fileName = $"client/src/forms/{t.Name.Substring(0, 1).ToUpper()}{t.Name.Substring(1)}Form.tsx"
+                        System.IO.File.WriteAllText(fileName, formCode)
+                        printfn $"Generated React Form: {fileName}"
+
                 // Demo transpilation of a constraint
                 if results.Contains(Demo) then
                     printfn "\n[Transpilation Demo]"
