@@ -28,7 +28,7 @@ module ProofEmitter =
         | Not a -> sprintf "NOT (%s)" (formatLattice a)
         | _ -> "ComplexBound"
 
-    let emitProofReport (tables: TableDef list) : string =
+    let emitProofReport (tables: TableDef list) : string * int * int =
         let sb = StringBuilder()
         let add (s: string) = sb.AppendLine(s) |> ignore
         
