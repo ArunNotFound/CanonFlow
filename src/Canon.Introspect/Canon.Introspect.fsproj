@@ -9,6 +9,8 @@
     <Compile Include="ISchemaProvider.fs" />
     <Compile Include="SqlParser.fs" />
     <Compile Include="PostgresSchemaProvider.fs" />
+    <Compile Include="SqlServerSchemaProvider.fs" />
+    <Compile Include="MySqlSchemaProvider.fs" />
   </ItemGroup>
 
   <ItemGroup>
