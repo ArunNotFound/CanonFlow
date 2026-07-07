@@ -49,11 +49,11 @@ type PostgresSchemaProvider(connectionString: string) =
             let colQuery = @"
                 SELECT 
                     c.table_schema, c.table_name, c.column_name, c.data_type, c.is_nullable, c.character_maximum_length, c.column_default, c.is_generated,
-                    (SELECT pg_get_constraintdef(con.oid)
+                    (SELECT string_agg(pg_get_constraintdef(con.oid), '|||')
                      FROM pg_constraint con
                      INNER JOIN pg_attribute a ON a.attnum = ANY(con.conkey) AND a.attrelid = con.conrelid
                      WHERE con.conrelid = (c.table_schema || '.' || c.table_name)::regclass
-                       AND a.attname = c.column_name AND con.contype = 'c' LIMIT 1) as check_constraint
+                       AND a.attname = c.column_name AND con.contype = 'c') as check_constraints
                 FROM information_schema.columns c
                 WHERE c.table_schema NOT IN ('pg_catalog', 'information_schema')
                 ORDER BY c.table_schema, c.table_name, c.ordinal_position;
@@ -71,15 +71,19 @@ type PostgresSchemaProvider(connectionString: string) =
                     let maxLen = if colReader.IsDBNull(5) then None else Some(colReader.GetInt32(5))
                     let defVal = if colReader.IsDBNull(6) then None else Some(colReader.GetString(6))
                     let isGen = if colReader.IsDBNull(7) then false else colReader.GetString(7) = "ALWAYS"
-                    let checkConstraintStr = if colReader.IsDBNull(8) then "" else colReader.GetString(8)
-                    let cleanCheckStr = 
-                        checkConstraintStr
-                            .Replace("CHECK ", "")
-                            .Replace("::numeric", "")
+                    let checkConstraintsStr = if colReader.IsDBNull(8) then "" else colReader.GetString(8)
+                    
+                    let checkConstraintStrs = 
+                        if String.IsNullOrEmpty(checkConstraintsStr) then []
+                        else checkConstraintsStr.Split("|||", StringSplitOptions.RemoveEmptyEntries) |> Array.toList
+
+                    let cleanCheckStrs = 
+                        checkConstraintStrs
+                        |> List.map (fun s -> s.Replace("CHECK ", "").Replace("::numeric", ""))
                     
                     let parsedConstraints =
-                        if String.IsNullOrEmpty(cleanCheckStr) then []
-                        else [SqlParser.parseConstraint cleanCheckStr]
+                        cleanCheckStrs
+                        |> List.map SqlParser.parseConstraint
                     
                     yield (tSchema, tName, { 
                         Name = cName
@@ -90,7 +94,7 @@ type PostgresSchemaProvider(connectionString: string) =
                         IsGenerated = isGen
                         Description = None
                         MaxLength = maxLen
-                        CheckConstraints = if String.IsNullOrEmpty(checkConstraintStr) then [] else [checkConstraintStr]
+                        CheckConstraints = checkConstraintStrs
                         ParsedConstraints = parsedConstraints
                         Semantics = None
                     })
