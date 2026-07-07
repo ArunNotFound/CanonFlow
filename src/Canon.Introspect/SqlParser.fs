@@ -20,7 +20,7 @@ module SqlParser =
             | None -> decimal (s + n)
         )
 
-    let pCast = opt (pstring "::" >>. manyChars (asciiLetter <|> pchar ' ' <|> pchar '[' <|> pchar ']')) |>> ignore
+    let pCast = opt (pstring "::" >>. manyChars (asciiLetter <|> pchar ' ') .>> opt (pstring "[]")) |>> ignore
 
     let pField, pFieldRef = createParserForwardedToRef()
     pFieldRef.Value <- 
