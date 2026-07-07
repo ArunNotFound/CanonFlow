@@ -11,7 +11,7 @@ module ReactScaffold =
         let imports = 
             [ "import React from 'react';"
               "import { useForm } from 'react-hook-form';"
-              sprintf "import { validate_%s } from './validators';" tableName ]
+              "import * as Validators from '../validators';" ]
             |> String.concat "\n"
 
         let inputs = 
@@ -21,13 +21,21 @@ module ReactScaffold =
                     match c.DataType.ToLower() with
                     | "integer" | "numeric" | "decimal" -> "number"
                     | _ -> "text"
+                
+                let registerCall =
+                    if c.CheckConstraints.IsEmpty then
+                        $"{{...register('{c.Name}')}}"
+                    else
+                        $"{{...register('{c.Name}', {{ validate: (v, formValues) => Validators.validate_{tableName}_{c.Name}(formValues) || 'Invalid value' }})}}"
+
                 $"""      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">{c.Name}</label>
         <input 
           type="{inputType}" 
-          {{...register('{c.Name}')}} 
+          {registerCall} 
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {{errors.{c.Name} && <p className="text-red-500 text-xs mt-1">{{(errors.{c.Name} as any).message}}</p>}}
       </div>"""
             )
             |> String.concat "\n"
