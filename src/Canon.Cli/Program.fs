@@ -63,7 +63,7 @@ module Program =
                     let mutable foundContradiction = false
                     for t in tables do
                         for c in t.Columns do
-                            if c.CheckConstraints.Length > 1 then
+                            if c.CheckConstraints.Length > 0 then
                                 let lattice = 
                                     c.CheckConstraints 
                                     |> List.map (fun s -> if s.StartsWith("CHECK ") then s.Substring(6) else s)
