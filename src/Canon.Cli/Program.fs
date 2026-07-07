@@ -10,6 +10,7 @@ type CliArguments =
     | [<CliPrefix(CliPrefix.DoubleDash)>] Pg of string
     | [<CliPrefix(CliPrefix.DoubleDash)>] Contracts
     | [<CliPrefix(CliPrefix.DoubleDash)>] Demo
+    | [<CliPrefix(CliPrefix.DoubleDash)>] Verify
     
     interface IArgParserTemplate with
         member s.Usage =
@@ -17,6 +18,7 @@ type CliArguments =
             | Pg _ -> "Introspect a Postgres database using the provided connection string."
             | Contracts -> "Emit JSON Schema and TypeScript clients."
             | Demo -> "Run the 30-minute stranger demo."
+            | Verify -> "Run in strict mode for CI/CD. Fails if any constraints are unsupported or approximate."
 
 module Program =
     [<EntryPoint>]
@@ -69,9 +71,16 @@ module Program =
                     printfn "Artifacts saved to 'output/' and TypeScript generated in 'client/src/validators.ts'."
 
                     // Generate the Mathematical Proof Report
-                    let proofReport = Canon.Cli.ProofEmitter.emitProofReport tables
+                    let proofReport, totalApprox, totalUnsupported = Canon.Cli.ProofEmitter.emitProofReport tables
                     System.IO.File.WriteAllText("output/PROOF.md", proofReport)
                     printfn "\n[Proof Engine] Signed certification generated at 'output/PROOF.md'."
+                    
+                    if results.Contains(Verify) then
+                        if totalUnsupported > 0 || totalApprox > 0 then
+                            printfn $"\n[CI/CD CHECK FAILED] Found {totalUnsupported} unsupported and {totalApprox} approximate bounds!"
+                            Environment.Exit(1)
+                        else
+                            printfn "\n[CI/CD CHECK PASSED] 100%% exact mathematical fidelity achieved!"
                 
                 // Demo transpilation of a constraint
                 if results.Contains(Demo) then
