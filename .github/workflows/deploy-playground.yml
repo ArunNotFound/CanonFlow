@@ -1,0 +1,67 @@
+name: Deploy Playground to GitHub Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' # Update to match your project's .NET version if needed
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Restore local tools
+        run: dotnet tool restore
+        working-directory: ./src/Canon.Wasm
+
+      - name: Build Fable Wasm
+        run: dotnet fable clean --yes && dotnet fable --outDir ../../playground/src/canonflow --noCache
+        working-directory: ./src/Canon.Wasm
+
+      - name: Install Playground Dependencies
+        run: npm ci
+        working-directory: ./playground
+
+      - name: Build Playground
+        run: npm run build
+        working-directory: ./playground
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './playground/dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
