@@ -33,10 +33,10 @@ jobs:
         with:
           dotnet-version: '10.0.x' # Update to match your project's .NET version if needed
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install Fable
         run: dotnet tool install -g fable
