@@ -237,7 +237,14 @@ module Program =
                     printfn "\n[Scaffolding Jetpack Compose UI]"
                     System.IO.Directory.CreateDirectory("client/android/compose") |> ignore
                     for t in tables do
-                        let formCode = Canon.Cli.ComposeScaffold.generateForm t
+                        let formCode = 
+                            let aiForm = Canon.Cli.ComposeScaffold.tryGenerateSmartComposeAsync t |> Async.RunSynchronously
+                            match aiForm with
+                            | Some code -> 
+                                printfn "  -> ✨ AI Smart Generation successful for %s!" t.Name
+                                code
+                            | None -> 
+                                Canon.Cli.ComposeScaffold.generateForm t
                         let fileName = $"client/android/compose/{t.Name.Substring(0, 1).ToUpper()}{t.Name.Substring(1)}Form.kt"
                         System.IO.File.WriteAllText(fileName, formCode)
                         printfn $"Generated Compose Form: {fileName}"
