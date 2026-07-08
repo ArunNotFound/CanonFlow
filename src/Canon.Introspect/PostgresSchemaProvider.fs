@@ -1,4 +1,5 @@
 namespace Canon.Introspect.Postgres
+#if !FABLE_COMPILER
 
 open System
 open System.Text.RegularExpressions
@@ -138,3 +139,5 @@ type PostgresSchemaProvider(connectionString: string) =
                     TableConstraints = []
                 }
             )
+
+#endif

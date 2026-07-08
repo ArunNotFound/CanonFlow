@@ -1,4 +1,5 @@
 namespace Canon.Introspect.MySql
+#if !FABLE_COMPILER
 
 open System
 open Canon.Introspect
@@ -13,3 +14,5 @@ type MySqlSchemaProvider(connectionString: string) =
             // e.g. querying information_schema.tables, information_schema.columns, information_schema.check_constraints
             printfn "MySQL introspection is not yet implemented."
             []
+
+#endif

@@ -19,7 +19,7 @@ module OkfEmitter =
         | Leaf(FieldBound(f, Range(Some(Exclusive min), None))) -> sprintf "%s > %M" f min
         | Leaf(FieldBound(f, Range(None, Some(Exclusive max)))) -> sprintf "%s < %M" f max
         | Leaf(FieldBound(f, Range(Some(Inclusive min), Some(Inclusive max)))) -> sprintf "%M <= %s <= %M" min f max
-        | Leaf(Opaque sql) -> sql
+        | Leaf(Constraint.Opaque sql) -> sql
         | And(a, b) -> sprintf "(%s AND %s)" (formatLattice a) (formatLattice b)
         | Or(a, b) -> sprintf "(%s OR %s)" (formatLattice a) (formatLattice b)
         | Not a -> sprintf "NOT (%s)" (formatLattice a)

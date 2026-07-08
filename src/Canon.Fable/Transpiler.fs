@@ -47,7 +47,7 @@ module Transpiler =
                 $"{a} {op} {b}", Fidelity.Exact
             | PrimaryKey -> "true", Fidelity.Unsupported "PrimaryKey concept does not exist in TS validators"
             | NonEmpty -> $"value.length > 0", Fidelity.Exact
-            | Opaque raw -> "true /* opaque sql */", Fidelity.Unsupported $"Cannot transpile raw SQL: {raw}"
+            | Constraint.Opaque _ -> "true", Fidelity.Unsupported "Cannot transpile raw SQL"
             | FieldBound(field, inner) -> 
                 let innerExpr, innerF = toTypeScript (Lattice.Leaf inner)
                 innerExpr.Replace("value", $"value.{field}"), innerF

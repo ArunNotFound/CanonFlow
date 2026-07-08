@@ -39,7 +39,7 @@ module OpenApiTranspiler =
                 "{}", Fidelity.Unsupported $"OpenAPI does not support cross-field validation ({colA} {op} {colB})"
             | PrimaryKey -> "{}", Fidelity.Unsupported "PrimaryKey concept does not exist in OpenAPI validators"
             | NonEmpty -> """{"minLength": 1}""", Fidelity.Exact
-            | Opaque raw -> "{}", Fidelity.Unsupported $"Cannot transpile raw SQL to OpenAPI: {raw}"
+            | Constraint.Opaque raw -> "{}", Fidelity.Unsupported $"Cannot transpile raw SQL to OpenAPI: {raw}"
             | FieldBound(field, inner) -> 
                 let innerExpr, innerF = toOpenApiSchema (Lattice.Leaf inner)
                 $"""{{"properties": {{"{field}": {innerExpr}}}}}""", innerF

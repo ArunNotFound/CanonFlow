@@ -41,13 +41,13 @@ module KotlinTranspiler =
                 let arr = items |> List.map (sprintf "\"%s\"") |> String.concat ", "
                 $"setOf({arr}).contains(value)", Fidelity.Exact
             | RelativeBound(colA, op, colB) ->
-                let isLiteral (s: string) = s.StartsWith("\"") || s.StartsWith("'") || System.Char.IsDigit(s.[0]) || s.StartsWith("-")
+                let isLiteral (s: string) = s.Length > 0 && (s.[0] = '"' || s.[0] = '\'' || System.Char.IsDigit(s.[0]) || s.[0] = '-')
                 let a = if isLiteral colA then colA else $"value.{colA}"
                 let b = if isLiteral colB then colB else $"value.{colB}"
                 $"{a} {op} {b}", Fidelity.Exact
             | PrimaryKey -> "true", Fidelity.Unsupported "PrimaryKey concept does not exist in Kotlin validators"
             | NonEmpty -> $"value.isNotEmpty()", Fidelity.Exact
-            | Opaque raw -> "true /* opaque sql */", Fidelity.Unsupported $"Cannot transpile raw SQL: {raw}"
+            | Constraint.Opaque _ -> "true", Fidelity.Unsupported "Cannot transpile raw SQL"
             | FieldBound(field, inner) -> 
                 let innerExpr, innerF = toKotlin (Lattice.Leaf inner)
                 innerExpr.Replace("value", $"value.{field}"), innerF

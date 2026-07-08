@@ -1,4 +1,5 @@
 namespace Canon.Introspect.SqlServer
+#if !FABLE_COMPILER
 
 open System
 open Canon.Introspect
@@ -13,3 +14,5 @@ type SqlServerSchemaProvider(connectionString: string) =
             // e.g. querying sys.tables, sys.columns, sys.check_constraints
             printfn "SQL Server introspection is not yet implemented."
             []
+
+#endif
