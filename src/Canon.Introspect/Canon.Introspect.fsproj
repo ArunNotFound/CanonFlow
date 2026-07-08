@@ -7,17 +7,17 @@
 
   <ItemGroup>
     <Compile Include="ISchemaProvider.fs" />
-    <Compile Include="SqlParser.fs" />
-    <Compile Include="PostgresSchemaProvider.fs" />
-    <Compile Include="SqlServerSchemaProvider.fs" />
-    <Compile Include="MySqlSchemaProvider.fs" />
+    <Compile Include="SqlParser.fs" Condition="'$(FABLE_COMPILER)' != 'true'" />
+    <Compile Include="PostgresSchemaProvider.fs" Condition="'$(FABLE_COMPILER)' != 'true'" />
+    <Compile Include="SqlServerSchemaProvider.fs" Condition="'$(FABLE_COMPILER)' != 'true'" />
+    <Compile Include="MySqlSchemaProvider.fs" Condition="'$(FABLE_COMPILER)' != 'true'" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Canon.Core\Canon.Core.fsproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(FABLE_COMPILER)' != 'true'">
     <PackageReference Include="FParsec" Version="1.1.1" />
     <PackageReference Include="Npgsql" Version="10.0.3" />
   </ItemGroup>

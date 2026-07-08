@@ -1,11 +1,10 @@
 
 import { toInt32, op_Subtraction, op_Addition, fromParts } from "../fable_modules/fable-library-js.5.6.0/Decimal.js";
-import { substring, join, concat } from "../fable_modules/fable-library-js.5.6.0/String.js";
+import { join, concat } from "../fable_modules/fable-library-js.5.6.0/String.js";
 import { reduce, isEmpty, map } from "../fable_modules/fable-library-js.5.6.0/List.js";
 import { StringBuilder__AppendLine_Z721C83C5, StringBuilder_$ctor } from "../fable_modules/fable-library-js.5.6.0/System.Text.js";
 import { equals, disposeSafe, getEnumerator } from "../fable_modules/fable-library-js.5.6.0/Util.js";
 import { Lattice$1, SemanticOptimizer_simplify } from "../Canon.Core/Lattice.js";
-import { parseConstraint } from "../Canon.Introspect/SqlParser.js";
 import { toString } from "../fable_modules/fable-library-js.5.6.0/Types.js";
 
 export function extractGenerators(lattice_mut) {
@@ -98,14 +97,7 @@ export function emitGenerators(tables) {
                 while (enumerator_1["System.Collections.IEnumerator.MoveNext"]()) {
                     const c = enumerator_1["System.Collections.Generic.IEnumerator`1.get_Current"]();
                     if (!isEmpty(c.CheckConstraints)) {
-                        const simplified = SemanticOptimizer_simplify(reduce((a, b) => (new Lattice$1(4, [a, b])), map(parseConstraint, map((s) => {
-                            if (s.startsWith("CHECK ")) {
-                                return substring(s, 6);
-                            }
-                            else {
-                                return s;
-                            }
-                        }, c.CheckConstraints))));
+                        const simplified = SemanticOptimizer_simplify(!isEmpty(c.ParsedConstraints) ? reduce((a, b) => (new Lattice$1(4, [a, b])), c.ParsedConstraints) : (new Lattice$1(0, [])));
                         if (!equals(simplified, new Lattice$1(1, []))) {
                             const genCode = extractGenerators(simplified);
                             if (genCode !== "Arb.generate") {

@@ -46,10 +46,10 @@ module FsCheckEmitter =
             for c in t.Columns do
                 if not c.CheckConstraints.IsEmpty then
                     let lattice = 
-                        c.CheckConstraints 
-                        |> List.map (fun s -> if s.StartsWith("CHECK ") then s.Substring(6) else s)
-                        |> List.map Canon.Introspect.SqlParser.parseConstraint 
-                        |> List.reduce (fun a b -> Lattice.And(a, b))
+                        if not c.ParsedConstraints.IsEmpty then
+                            c.ParsedConstraints |> List.reduce (fun a b -> Lattice.And(a, b))
+                        else
+                            Lattice.True
                     
                     let simplified = SemanticOptimizer.simplify lattice
                     if simplified <> Lattice.False then

@@ -7,6 +7,26 @@ open Canon.Emit
 
 module CanonCompiler =
     
+    let parseConstraintStr (s: string) =
+        let s = s.ToUpperInvariant().Trim()
+        let s = if s.StartsWith("CHECK") then s.Substring(5).Trim([|' '; '('; ')'|]) else s
+        if s.Contains(">=") then
+            let p = s.Split(">=")
+            Lattice.Leaf (Constraint.Range(Some (Bound.Inclusive(System.Decimal.TryParse(p.[1].Trim()) |> snd)), None))
+        elif s.Contains(">") then
+            let p = s.Split(">")
+            Lattice.Leaf (Constraint.Range(Some (Bound.Exclusive(System.Decimal.TryParse(p.[1].Trim()) |> snd)), None))
+        elif s.Contains("<=") then
+            let p = s.Split("<=")
+            Lattice.Leaf (Constraint.Range(None, Some (Bound.Inclusive(System.Decimal.TryParse(p.[1].Trim()) |> snd))))
+        elif s.Contains("<") then
+            let p = s.Split("<")
+            Lattice.Leaf (Constraint.Range(None, Some (Bound.Exclusive(System.Decimal.TryParse(p.[1].Trim()) |> snd))))
+        elif s.Contains("LIKE") || s.Contains("~") || s.Contains("SIMILAR TO") then
+            Lattice.Leaf (Constraint.Opaque("Regex dummy")) // Dummy for playground
+        else
+            Lattice.True
+
     let transpile(sqlText: string) =
         try
             let tables = DdlParser.parseSql sqlText
@@ -18,7 +38,7 @@ module CanonCompiler =
                     if c.CheckConstraints.Length > 0 then
                         let lattice = 
                             c.CheckConstraints 
-                            |> List.map Canon.Introspect.SqlParser.parseConstraint
+                            |> List.map parseConstraintStr
                             |> List.reduce (fun a b -> Lattice.And(a, b))
                         let simplified = SemanticOptimizer.simplify lattice
                         if simplified = Lattice.False then
@@ -34,9 +54,12 @@ module CanonCompiler =
                     if not c.CheckConstraints.IsEmpty then
                         let lattice = 
                             c.CheckConstraints 
-                            |> List.map (fun s -> if s.StartsWith("CHECK ") then s.Substring(6) else s)
-                            |> List.map Canon.Introspect.SqlParser.parseConstraint 
+                            |> List.map parseConstraintStr 
                             |> List.reduce (fun a b -> Lattice.And(a, b))
+                            
+                        // Populate ParsedConstraints for FsCheckEmitter
+                        let cNew = { c with ParsedConstraints = [lattice] }
+                        
                         let tsCode, _ = Transpiler.emitValidator $"{t.Name}_{c.Name}" lattice c.IsNullable
                         let ktCode, _ = KotlinTranspiler.emitValidator $"{t.Name}_{c.Name}" lattice c.IsNullable
                         let swCode, _ = SwiftTranspiler.emitValidator $"{t.Name}_{c.Name}" lattice c.IsNullable
@@ -44,7 +67,18 @@ module CanonCompiler =
                         ktSb.AppendLine(ktCode) |> ignore
                         swSb.AppendLine(swCode) |> ignore
 
-            let fscheckCode = FsCheckEmitter.emitGenerators tables
+            // Update tables to include the parsed constraints for FsCheck
+            let updatedTables = 
+                tables |> List.map (fun t -> 
+                    let updatedCols =
+                        t.Columns |> List.map (fun c -> 
+                            if not c.CheckConstraints.IsEmpty then
+                                { c with ParsedConstraints = c.CheckConstraints |> List.map parseConstraintStr }
+                            else c)
+                    { t with Columns = updatedCols }
+                )
+
+            let fscheckCode = FsCheckEmitter.emitGenerators updatedTables
 
             {| 
                 typescript = tsSb.ToString()
