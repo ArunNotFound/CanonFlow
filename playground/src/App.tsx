@@ -12,9 +12,10 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Button
+  Button,
+  Snackbar
 } from '@mui/material';
-import { AutoAwesome, PlayArrow, Code, Storage, CheckCircle } from '@mui/icons-material';
+import { AutoAwesome, PlayArrow, Code, Storage, CheckCircle, Share } from '@mui/icons-material';
 // @ts-ignore
 import { transpile } from './canonflow/Library.js';
 import { samples } from './samples';
@@ -67,10 +68,23 @@ function TabPanel(props: { children?: React.ReactNode; index: number; value: num
 }
 
 export default function App() {
-  const [sql, setSql] = useState<string>(samples['sangam-credit'] || '-- Write your DDL here');
+  const getInitialSql = () => {
+    try {
+      const hash = window.location.hash;
+      if (hash.startsWith('#code=')) {
+        return decodeURIComponent(atob(hash.substring(6)));
+      }
+    } catch (e) {
+      console.error("Failed to parse code from URL", e);
+    }
+    return samples['sangam-credit'] || '-- Write your DDL here';
+  };
+
+  const [sql, setSql] = useState<string>(getInitialSql());
   const [activeTab, setActiveTab] = useState(0);
   const [output, setOutput] = useState<any>(null);
   const [sampleKey, setSampleKey] = useState<string>('sangam-credit');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleTranspile = () => {
     try {
@@ -91,6 +105,17 @@ export default function App() {
     const key = e.target.value;
     setSampleKey(key);
     setSql(samples[key] || '');
+    window.location.hash = '';
+  };
+
+  const handleShare = () => {
+    const encoded = btoa(encodeURIComponent(sql));
+    window.location.hash = `code=${encoded}`;
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setSnackbarOpen(true);
+    }).catch(err => {
+      console.error("Failed to copy clipboard", err);
+    });
   };
 
   return (
@@ -127,6 +152,15 @@ export default function App() {
                 ))}
               </Select>
             </FormControl>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              startIcon={<Share />}
+              onClick={handleShare}
+              className="font-bold border-primary/50 hover:bg-primary/10 transition-all"
+            >
+              Share URL
+            </Button>
             <Button 
               variant="contained" 
               color="primary" 
@@ -258,6 +292,14 @@ export default function App() {
           </div>
         </div>
       </div>
+      
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Link copied to clipboard!"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </ThemeProvider>
   );
 }
