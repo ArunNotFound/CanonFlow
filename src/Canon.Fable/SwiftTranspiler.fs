@@ -53,10 +53,11 @@ module SwiftTranspiler =
                 innerExpr.Replace("value", $"value.{field}"), innerF
 
     /// Emits a full Swift validation function and its Fidelity grade.
-    let emitValidator (name: string) (predicate: Lattice<Constraint>) (isNullable: bool) : string * Fidelity =
+    let emitValidator (name: string) (predicate: Lattice<Constraint>) (isNullable: bool) (provenance: string option) : string * Fidelity =
         let expr, fidelity = toSwift predicate
         let guard = if isNullable then "\n    if value == nil { return true }" else ""
-        let code = $"""func validate_{name}(value: Any?) -> Bool {{{guard}
+        let provComment = match provenance with | Some p -> $"// Provenance: {p}\n" | None -> ""
+        let code = $"""{provComment}func validate_{name}(value: Any?) -> Bool {{{guard}
     return {expr}
 }}"""
         code, fidelity

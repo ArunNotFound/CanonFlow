@@ -22,7 +22,9 @@ jobs:
       with:
         node-version: '20'
     - name: Run Constitution (Lattice Laws)
-      run: dotnet test tests/laws
+      run: |
+        cd tests/laws && npm init -y && npm install zod && cd ../..
+        dotnet test tests/laws
     - name: Run Mutation Audit
       run: bash tests/laws/mutation_audit.sh
     - name: Run Integration Tests

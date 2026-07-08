@@ -15,7 +15,7 @@ module SoundnessLaws =
         let tsCode, fidelity = Transpiler.emitValidator "guarantor_share_pct" lattice true
         
         // Assert the code has the null guard
-        Assert.Contains("if (value === null || value === undefined) return true;", tsCode)
+        Assert.Contains(".nullable()", tsCode)
 
     [<Fact>]
     let ``Soundness Law: if database admits NULL, Kotlin validator admits NULL`` () =

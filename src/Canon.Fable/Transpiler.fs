@@ -51,12 +51,13 @@ module Transpiler =
                 $"z.object({{ {field}: {innerExpr} }})", innerF
 
     /// Emits a full TypeScript validation function and its Fidelity grade.
-    let emitValidator (name: string) (predicate: Lattice<Constraint>) (isNullable: bool) : string * Fidelity =
+    let emitValidator (name: string) (predicate: Lattice<Constraint>) (isNullable: bool) (provenance: string option) : string * Fidelity =
         let expr, fidelity = toTypeScript predicate
         let baseCode = if isNullable then $"{expr}.nullable()" else expr
+        let provComment = match provenance with | Some p -> $"// Provenance: {p}\n" | None -> ""
         let code = $"""import {{ z }} from "zod";
 
-export const {name}Schema = {baseCode};
+{provComment}export const {name}Schema = {baseCode};
 
 export function validate_{name}(value: any): boolean {{
     return {name}Schema.safeParse(value).success;

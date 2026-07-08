@@ -11,10 +11,11 @@ open System.Diagnostics
 
 /// Runs a block of JS code in Node and returns the stdout string.
 let runInNode (jsCode: string) =
-    let tempFile = Path.GetTempFileName() + ".js"
+    let tempFile = Path.Combine(__SOURCE_DIRECTORY__, Guid.NewGuid().ToString() + ".js")
     File.WriteAllText(tempFile, jsCode)
     
     let psi = ProcessStartInfo("node", tempFile)
+    psi.WorkingDirectory <- __SOURCE_DIRECTORY__
     psi.RedirectStandardOutput <- true
     psi.RedirectStandardError <- true
     psi.UseShellExecute <- false
@@ -22,7 +23,10 @@ let runInNode (jsCode: string) =
     use p = Process.Start(psi)
     p.WaitForExit()
     let out = p.StandardOutput.ReadToEnd().Trim()
+    let err = p.StandardError.ReadToEnd().Trim()
     File.Delete(tempFile)
+    if not (System.String.IsNullOrEmpty(err)) then
+        failwithf "Node Error: %s\nCode: %s" err jsCode
     out
 
 /// F# native evaluator for a subset of constraints.
@@ -113,9 +117,11 @@ module AgreementProperties =
             // Strip TypeScript syntax so Node can run it directly as a script
             let jsScript = 
                 tsCode
+                    .Replace("export const", "const")
                     .Replace("export function", "function")
                     .Replace(": any", "")
                     .Replace(": boolean", "")
+                    .Replace("import { z } from \"zod\";", "const { z } = require('zod');")
             
             // Append execution and print result
             let executionCode = sprintf "%s\nlet obj = new Number(%d); obj.age = %d; console.log(validate_test(obj));" jsScript value value

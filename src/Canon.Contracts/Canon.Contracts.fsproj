@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Include="OpenMetadata.fs" />
     <Compile Include="OkfCatalog.fs" />
+    <Compile Include="LayerMapEmitter.fs" />
+    <Compile Include="AgentContextEmitter.fs" />
   </ItemGroup>
 
   <ItemGroup>
