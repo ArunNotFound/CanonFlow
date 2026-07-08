@@ -18,6 +18,7 @@ type CliArguments =
     | [<CliPrefix(CliPrefix.DoubleDash)>] Diagnose
     | [<CliPrefix(CliPrefix.DoubleDash)>] MigrateTo of string
     | [<CliPrefix(CliPrefix.DoubleDash)>] RestApi
+    | [<CliPrefix(CliPrefix.DoubleDash)>] FsCheck
     
     interface IArgParserTemplate with
         member s.Usage =
@@ -33,6 +34,7 @@ type CliArguments =
             | Diagnose -> "Run semantic optimizer to find contradictory constraints (e.g. constraints that collapse to False)."
             | MigrateTo _ -> "Compare with a target database and generate migration SQL scripts."
             | RestApi -> "Generate a PostgREST-style F# Giraffe API."
+            | FsCheck -> "Generate FsCheck Arbitraries for property-based testing."
 
 module Program =
     [<EntryPoint>]
@@ -310,6 +312,15 @@ module Program =
                     let path = "server/src/Api.fs"
                     System.IO.File.WriteAllText(path, apiSb.ToString())
                     printfn $"CanonFlowRest Giraffe API generated at: {path}"
+
+                // FsCheck Emitter
+                if results.Contains(FsCheck) then
+                    printfn "\n[Shift-Left Testing] Generating FsCheck Arbitraries..."
+                    let fscheckCode = Canon.Emit.FsCheckEmitter.emitGenerators tables
+                    System.IO.Directory.CreateDirectory("output/tests") |> ignore
+                    let path = "output/tests/Generators.fs"
+                    System.IO.File.WriteAllText(path, fscheckCode)
+                    printfn $"FsCheck property-based testing generators emitted to: {path}"
 
                 0
             with

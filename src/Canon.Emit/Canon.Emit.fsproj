@@ -12,6 +12,7 @@
     <Compile Include="OpenSearchEmitter.fs" />
     <Compile Include="OpenApiTranspiler.fs" />
     <Compile Include="MigrationEmitter.fs" />
+    <Compile Include="FsCheckEmitter.fs" />
   </ItemGroup>
 
   <ItemGroup>
