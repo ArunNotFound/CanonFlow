@@ -38,5 +38,9 @@ dotnet run -- --pg "Host=localhost;Database=mydb;Username=user;Password=pass" --
 ```
 Check the `output/` folder for the generated `openmetadata` JSON and `catalog.md` files, and `client/src/validators.ts` for your native TypeScript validation logic!
 
+## 🌐 Foundation
+
+Learn more about the underlying philosophy and mathematical model at the [CanonFlow Foundation](https://canonflowfoundation.github.io).
+
 ## License
 CanonFlow is steward-led Open Source under the [Apache 2.0 License](LICENSE).
