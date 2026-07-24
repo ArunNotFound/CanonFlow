@@ -57,12 +57,14 @@ module SqlParser =
         attempt pStrGreaterThanOrEqual; attempt pStrGreaterThan; attempt pStrLessThanOrEqual; attempt pStrLessThan 
     ]
 
+    let pAnyArrayInner = 
+        pstring "ARRAY[" >>. ws >>. sepBy (pStringLiteral .>> pCast) (ws .>> pstring "," .>> ws) .>> ws .>> pstring "]"
+
     let pAnyArray = 
         pstring "=" >>. ws >>. pstring "ANY" >>. ws >>. 
         between (pchar '(' >>. ws) (ws .>> pchar ')') (
-            between (pchar '(' >>. ws) (ws .>> pchar ')') (
-                pstring "ARRAY[" >>. ws >>. sepBy (pStringLiteral .>> pCast) (ws .>> pstring "," .>> ws) .>> ws .>> pstring "]"
-            ) .>> pCast
+            (attempt (between (pchar '(' >>. ws) (ws .>> pchar ')') pAnyArrayInner) <|> pAnyArrayInner)
+            .>> pCast
         ) |>> InSet
 
     let pRelative =
